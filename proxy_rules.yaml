@@ -1,77 +1,160 @@
-#DOMAIN-SUFFIX  指域名适配，所有带com都适配规则
-#DOMAIN-KEYWORD 关键词适配，带这个词的都适配规则
-#AUTO 走指定AUTO规则 自适应选择最低延迟的代理
-#REJECT 禁止网络链接
-#DIRECT 不走代理 直接通过本地网络走
+port: 7890
+socks-port: 7891
+allow-lan: false
+mode: Rule
+log-level: info
+external-controller: '0.0.0.0:9090'
+secret: ''
 
-#单独走台湾最低延迟节点组别，CHATGPT自动选择台湾节点组别
-- 'DOMAIN-KEYWORD,openai,CHATGPT'
-- 'DOMAIN-KEYWORD,chatgpt,CHATGPT'
-- 'DOMAIN-SUFFIX,static.cloudflareinsights.com,CHATGPT'
-- 'DOMAIN-SUFFIX,sentry-cdn.com,CHATGPT'
-- 'DOMAIN-SUFFIX,sentry.io,CHATGPT'
-- 'DOMAIN-SUFFIX,chat.openai.com.cdn.cloudflare.net,CHATGPT'
-- 'DOMAIN-SUFFIX,challengers.cloudflare.com,CHATGPT'
-- 'DOMAIN-SUFFIX,intercomcdn.com,CHATGPT'
-- 'DOMAIN-SUFFIX,azureedge.net,CHATGPT'
-- 'DOMAIN-SUFFIX,openai.com,CHATGPT'
-- 'DOMAIN-SUFFIX,chatgpt.com,CHATGPT'
-
-#允许走代理，DOMAIN-SUFFIX精准适配，DOMAIN-KEYWORD关键词适配
-- 'DOMAIN-SUFFIX,wikipedia.org,AUTO'
-- 'DOMAIN-SUFFIX,tunnelblick.com,AUTO'
-- 'DOMAIN-SUFFIX,godaddy.com,AUTO'
-- 'DOMAIN-SUFFIX,gmail.com,AUTO'
-- 'DOMAIN-SUFFIX,youtube.com,AUTO'
-- 'DOMAIN-KEYWORD,google,AUTO'
-- 'DOMAIN-SUFFIX,ytimg.com,AUTO'
-- 'DOMAIN-SUFFIX,reuters.com,AUTO'
-#telegram规则
-- 'DOMAIN-SUFFIX,telegram.org,AUTO'
-- 'DOMAIN-SUFFIX,t.me,AUTO'
-- 'DOMAIN-SUFFIX,telegram.me,AUTO'
-- 'DOMAIN-SUFFIX,tg.me,AUTO'
-- 'IP-CIDR,149.154.160.0/20,AUTO'
-- 'IP-CIDR,91.108.4.0/22,AUTO'
-- 'IP-CIDR,91.108.56.0/22,AUTO'
-- 'IP-CIDR,91.108.8.0/22,AUTO'
-- 'IP-CIDR,91.108.12.0/22,AUTO'
-- 'IP-CIDR,91.108.16.0/22,AUTO'
-- 'IP-CIDR,91.108.20.0/22,AUTO'
-- 'IP-CIDR,91.108.24.0/22,AUTO'
-- 'IP-CIDR,91.108.28.0/22,AUTO'
-- 'IP-CIDR,91.108.32.0/22,AUTO'
-- 'IP-CIDR,91.108.36.0/22,AUTO'
-- 'IP-CIDR,91.108.40.0/22,AUTO'
-- 'IP-CIDR,91.108.44.0/22,AUTO'
-- 'IP-CIDR,91.108.48.0/22,AUTO'
-- 'IP-CIDR,91.108.52.0/22,AUTO'
-- 'DOMAIN-KEYWORD,telegram,AUTO'
-#禁止联网。REJECT拒绝请求，禁止网络联网
-- 'DOMAIN-KEYWORD,admarvel,REJECT'
-- 'DOMAIN-KEYWORD,admaster,REJECT'
-- 'DOMAIN-KEYWORD,adsage,REJECT'
-- 'DOMAIN-KEYWORD,adsmogo,REJECT'
-- 'DOMAIN-KEYWORD,adsrvmedia,REJECT'
-- 'DOMAIN-KEYWORD,adwords,REJECT'
-- 'DOMAIN-KEYWORD,adservice,REJECT'
-- 'DOMAIN-KEYWORD,domob,REJECT'
-- 'DOMAIN-KEYWORD,duomeng,REJECT'
-- 'DOMAIN-KEYWORD,dwtrack,REJECT'
-- 'DOMAIN-KEYWORD,guanggao,REJECT'
-- 'DOMAIN-KEYWORD,lianmeng,REJECT'
-- 'DOMAIN-SUFFIX,mmstat.com,REJECT'
-- 'DOMAIN-KEYWORD,omgmta,REJECT'
-- 'DOMAIN-KEYWORD,openx,REJECT'
-- 'DOMAIN-KEYWORD,partnerad,REJECT'
-- 'DOMAIN-KEYWORD,pingfore,REJECT'
-- 'DOMAIN-KEYWORD,supersonicads,REJECT'
-- 'DOMAIN-KEYWORD,tracking,REJECT'
-- 'DOMAIN-KEYWORD,uedas,REJECT'
-- 'DOMAIN-KEYWORD,umeng,REJECT'
-- 'DOMAIN-KEYWORD,usage,REJECT'
-- 'DOMAIN-KEYWORD,wlmonitor,REJECT'
-- 'DOMAIN-KEYWORD,zjtoolbar,REJECT'
-
-#不符合上述规则直接连接，不走代理，用本地网络访问。
-- 'MATCH,DIRECT'
+rule-providers:
+  custom-rules:
+    type: http
+    behavior: classical
+    url: "https://raw.githubusercontent.com/congo99/proxy-rules/main/proxy_rules.yaml"
+    interval: 3600
+proxies:
+    - { name: 'DE-Detour 01 AEAD', type: vmess, server: de-detour-01.grabgo.pro, port: 15801, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'DE-Detour 02 AEAD', type: vmess, server: de-detour-02.grabgo.pro, port: 15802, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'DE-Detour-03 AEAD', type: vmess, server: de-detour-03.grabgo.pro, port: 15803, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Australia 01 (NF AU IPv6 Disney)', type: vmess, server: extreme-au-01.grabgo.pro, port: 16141, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Australia 02 (NF AU IPv6 Disney)', type: vmess, server: extreme-au-02.grabgo.pro, port: 16142, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme France 01 (NF FR IPv6 Disney)', type: vmess, server: extreme-fr-01.grabgo.pro, port: 16131, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme France 02 (NF FR IPv6 Disney)', type: vmess, server: extreme-fr-02.grabgo.pro, port: 16132, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme France 03 (NF FR IPv6 Disney)', type: vmess, server: extreme-fr-03.grabgo.pro, port: 16133, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme France 04 (NF FR IPv6 Disney)', type: vmess, server: extreme-fr-04.grabgo.pro, port: 16134, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Hong Kong 01 (NF HK)', type: vmess, server: extreme-hk-01.grabgo.pro, port: 16111, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Hong Kong 02 (NF HK)', type: vmess, server: extreme-hk-02.grabgo.pro, port: 16112, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Hong Kong 03 (NF HK)', type: vmess, server: extreme-hk-03.grabgo.pro, port: 16113, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Hong Kong 04 (NF HK)', type: vmess, server: extreme-hk-04.grabgo.pro, port: 16114, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Japan 01 (NF JP Disney Prime ChatGPT)', type: vmess, server: extreme-jp-01.grabgo.pro, port: 16171, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Singapore 01 (NF SG Disney Prime ChatGPT)', type: vmess, server: extreme-sg-01.grabgo.pro, port: 16151, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Singapore 02 (NF SG Disney Prime ChatGPT)', type: vmess, server: extreme-sg-02.grabgo.pro, port: 16152, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Singapore 03 (NF SG Disney Prime ChatGPT)', type: vmess, server: extreme-sg-03.grabgo.pro, port: 16153, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Taiwan 01 (NF TW Disney ChatGPT)', type: vmess, server: extreme-tw-01.grabgo.pro, port: 16121, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Taiwan 02 (NF TW Disney ChatGPT)', type: vmess, server: extreme-tw-02.grabgo.pro, port: 16122, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Taiwan 03 (NF TW Disney ChatGPT)', type: vmess, server: extreme-tw-03.grabgo.pro, port: 16123, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme UK 01 (NF UK BBC Prime ChatGPT)', type: vmess, server: extreme-uk-01.grabgo.pro, port: 16161, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme USA 01 (NF TR IPv6 Disney)', type: vmess, server: extreme-usa-01.grabgo.pro, port: 16181, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme USA 02 (NF TR IPv6 Disney)', type: vmess, server: extreme-usa-02.grabgo.pro, port: 16182, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme USA 03 (NF US Disney ChatGPT)', type: vmess, server: extreme-usa-03.grabgo.pro, port: 16183, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme USA 04 (NF US Disney ChatGPT)', type: vmess, server: extreme-usa-04.grabgo.pro, port: 16184, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme USA 05 (NF US Disney ChatGPT)', type: vmess, server: extreme-usa-05.grabgo.pro, port: 16185, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme USA 06 (NF US Disney ChatGPT)', type: vmess, server: extreme-usa-06.grabgo.pro, port: 16186, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Extreme Vietnam 01', type: vmess, server: extreme-vn-01.grabgo.pro, port: 16101, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 01 AEAD', type: vmess, server: hkt-detour-01.grabgo.pro, port: 15101, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 02 AEAD', type: vmess, server: hkt-detour-02.grabgo.pro, port: 15102, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 03 AEAD', type: vmess, server: hkt-detour-03.grabgo.pro, port: 15103, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 04 AEAD', type: vmess, server: hkt-detour-04.grabgo.pro, port: 15104, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 05 AEAD', type: vmess, server: hkt-detour-05.grabgo.pro, port: 15105, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 06 AEAD', type: vmess, server: hkt-detour-06.grabgo.pro, port: 15106, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 07 AEAD', type: vmess, server: hkt-detour-07.grabgo.pro, port: 15107, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 08 AEAD', type: vmess, server: hkt-detour-08.grabgo.pro, port: 15108, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 09 AEAD', type: vmess, server: hkt-detour-09.grabgo.pro, port: 15109, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 10 AEAD', type: vmess, server: hkt-detour-10.grabgo.pro, port: 15110, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 11 AEAD', type: vmess, server: hkt-detour-11.grabgo.pro, port: 15111, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 12 AEAD', type: vmess, server: hkt-detour-12.grabgo.pro, port: 15112, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 13 AEAD', type: vmess, server: hkt-detour-13.grabgo.pro, port: 15113, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 14 AEAD', type: vmess, server: hkt-detour-14.grabgo.pro, port: 15114, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 15 AEAD', type: vmess, server: hkt-detour-15.grabgo.pro, port: 15115, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 16 AEAD', type: vmess, server: hkt-detour-16.grabgo.pro, port: 15116, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 17 AEAD', type: vmess, server: hkt-detour-17.grabgo.pro, port: 15117, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 18 AEAD', type: vmess, server: hkt-detour-18.grabgo.pro, port: 15118, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 19 AEAD', type: vmess, server: hkt-detour-19.grabgo.pro, port: 15119, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 20 AEAD', type: vmess, server: hkt-detour-20.grabgo.pro, port: 15120, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 21 AEAD', type: vmess, server: hkt-detour-21.grabgo.pro, port: 15131, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 22 AEAD', type: vmess, server: hkt-detour-22.grabgo.pro, port: 15132, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 23 AEAD', type: vmess, server: hkt-detour-23.grabgo.pro, port: 15133, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'HKT-Detour 24 AEAD', type: vmess, server: hkt-detour-24.grabgo.pro, port: 15134, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 01 AEAD', type: vmess, server: sz-hk-01.grabgo.pro, port: 15121, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 02 AEAD', type: vmess, server: sz-hk-02.grabgo.pro, port: 15122, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 03 AEAD', type: vmess, server: sz-hk-03.grabgo.pro, port: 15123, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 04 AEAD', type: vmess, server: sz-hk-04.grabgo.pro, port: 15124, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 05 AEAD', type: vmess, server: sz-hk-05.grabgo.pro, port: 15125, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 06 AEAD', type: vmess, server: sz-hk-06.grabgo.pro, port: 15126, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 07 AEAD', type: vmess, server: sz-hk-07.grabgo.pro, port: 15127, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 08 AEAD', type: vmess, server: sz-hk-08.grabgo.pro, port: 15128, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 09 AEAD', type: vmess, server: sz-hk-09.grabgo.pro, port: 15129, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 10 AEAD', type: vmess, server: sz-hk-10.grabgo.pro, port: 15130, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 11 AEAD', type: vmess, server: sz-hk-11.grabgo.pro, port: 15151, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-HK 12 AEAD', type: vmess, server: sz-hk-12.grabgo.pro, port: 15152, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-JP 01 AEAD', type: vmess, server: sz-jp-01.grabgo.pro, port: 15611, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-JP 02 AEAD', type: vmess, server: sz-jp-02.grabgo.pro, port: 15612, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-JP 03 AEAD', type: vmess, server: sz-jp-03.grabgo.pro, port: 15613, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-JP 04 AEAD', type: vmess, server: sz-jp-04.grabgo.pro, port: 15614, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 01 AEAD', type: vmess, server: sz-sg-01.grabgo.pro, port: 15701, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 02 AEAD', type: vmess, server: sz-sg-02.grabgo.pro, port: 15702, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 03 AEAD', type: vmess, server: sz-sg-03.grabgo.pro, port: 15703, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 04 AEAD', type: vmess, server: sz-sg-04.grabgo.pro, port: 15704, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 05 AEAD', type: vmess, server: sz-sg-05.grabgo.pro, port: 15705, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 06 AEAD', type: vmess, server: sz-sg-06.grabgo.pro, port: 15706, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 07 AEAD', type: vmess, server: sz-sg-07.grabgo.pro, port: 15707, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 08 AEAD', type: vmess, server: sz-sg-08.grabgo.pro, port: 15708, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 09 AEAD', type: vmess, server: sz-sg-09.grabgo.pro, port: 15709, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-SG 10 AEAD', type: vmess, server: sz-sg-10.grabgo.pro, port: 15710, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 01 AEAD', type: vmess, server: sz-us-01.grabgo.pro, port: 15731, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 02 AEAD', type: vmess, server: sz-us-02.grabgo.pro, port: 15732, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 03 AEAD', type: vmess, server: sz-us-03.grabgo.pro, port: 15733, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 04 AEAD', type: vmess, server: sz-us-04.grabgo.pro, port: 15734, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 05 AEAD', type: vmess, server: sz-us-05.grabgo.pro, port: 15735, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 06 AEAD', type: vmess, server: sz-us-06.grabgo.pro, port: 15736, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 07 AEAD', type: vmess, server: sz-us-07.grabgo.pro, port: 15737, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 08 AEAD', type: vmess, server: sz-us-08.grabgo.pro, port: 15738, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 09 AEAD', type: vmess, server: sz-us-09.grabgo.pro, port: 15739, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'IEPL SZ-US 10 AEAD', type: vmess, server: sz-us-10.grabgo.pro, port: 15740, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'JP-Detour 01 AEAD', type: vmess, server: jp-01.grabgo.pro, port: 15601, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'JP-Detour 02 AEAD', type: vmess, server: jp-02.grabgo.pro, port: 15602, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'JP-Detour 03 AEAD', type: vmess, server: jp-03.grabgo.pro, port: 15603, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'JP-Detour 04 AEAD', type: vmess, server: jp-04.grabgo.pro, port: 15604, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'JP-Detour 05 AEAD', type: vmess, server: jp-05.grabgo.pro, port: 15605, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'JP-Detour 06 AEAD', type: vmess, server: jp-06.grabgo.pro, port: 15606, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 01 AEAD', type: vmess, server: la-detour-01.grabgo.pro, port: 15501, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 02 AEAD', type: vmess, server: la-detour-02.grabgo.pro, port: 15502, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 03 AEAD', type: vmess, server: la-detour-03.grabgo.pro, port: 15503, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 04 AEAD', type: vmess, server: la-detour-04.grabgo.pro, port: 15504, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 05 AEAD', type: vmess, server: la-detour-05.grabgo.pro, port: 15505, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 06 AEAD', type: vmess, server: la-detour-06.grabgo.pro, port: 15506, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 07 AEAD', type: vmess, server: la-detour-07.grabgo.pro, port: 15507, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 08 AEAD', type: vmess, server: la-detour-08.grabgo.pro, port: 15508, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 09 AEAD', type: vmess, server: la-detour-09.grabgo.pro, port: 15509, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'LA-Detour 10 AEAD', type: vmess, server: la-detour-10.grabgo.pro, port: 15510, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Oz-Detour 01 AEAD', type: vmess, server: oz-detour-01.grabgo.pro, port: 15811, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'Oz-Detour 02 AEAD', type: vmess, server: oz-detour-02.grabgo.pro, port: 15812, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'SG-Detour 01 AEAD', type: vmess, server: sg-detour-01.grabgo.pro, port: 15301, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'SG-Detour 02 AEAD', type: vmess, server: sg-detour-02.grabgo.pro, port: 15302, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'SG-Detour 03 AEAD', type: vmess, server: sg-detour-03.grabgo.pro, port: 15303, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 01 AEAD', type: vmess, server: tw-detour-01.grabgo.pro, port: 15201, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 02 AEAD', type: vmess, server: tw-detour-02.grabgo.pro, port: 15202, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 03 AEAD', type: vmess, server: tw-detour-03.grabgo.pro, port: 15203, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 04 AEAD', type: vmess, server: tw-detour-04.grabgo.pro, port: 15204, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 05 AEAD', type: vmess, server: tw-detour-05.grabgo.pro, port: 15205, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 06 AEAD', type: vmess, server: tw-detour-06.grabgo.pro, port: 15206, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 07 AEAD', type: vmess, server: tw-detour-07.grabgo.pro, port: 15207, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 08 AEAD', type: vmess, server: tw-detour-08.grabgo.pro, port: 15208, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 09 AEAD', type: vmess, server: tw-detour-09.grabgo.pro, port: 15209, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 10 AEAD', type: vmess, server: tw-detour-10.grabgo.pro, port: 15210, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 11 AEAD', type: vmess, server: tw-detour-11.grabgo.pro, port: 15211, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 12 AEAD', type: vmess, server: tw-detour-12.grabgo.pro, port: 15212, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 13 AEAD', type: vmess, server: tw-detour-13.grabgo.pro, port: 15213, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 14 AEAD', type: vmess, server: tw-detour-14.grabgo.pro, port: 15214, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 15 AEAD', type: vmess, server: tw-detour-15.grabgo.pro, port: 15215, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 16 AEAD', type: vmess, server: tw-detour-16.grabgo.pro, port: 15216, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 17 AEAD', type: vmess, server: tw-detour-17.grabgo.pro, port: 15217, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 18 AEAD', type: vmess, server: tw-detour-18.grabgo.pro, port: 15218, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 19 AEAD', type: vmess, server: tw-detour-19.grabgo.pro, port: 15219, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 20 AEAD', type: vmess, server: tw-detour-20.grabgo.pro, port: 15220, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 21 AEAD', type: vmess, server: tw-detour-21.grabgo.pro, port: 15221, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 22 AEAD', type: vmess, server: tw-detour-22.grabgo.pro, port: 15222, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 23 AEAD', type: vmess, server: tw-detour-23.grabgo.pro, port: 15223, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'TW-Detour 24 AEAD', type: vmess, server: tw-detour-24.grabgo.pro, port: 15224, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'UK Detour-01 AEAD', type: vmess, server: uk-detour-01.grabgo.pro, port: 15711, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'UK Detour-02 AEAD', type: vmess, server: uk-detour-02.grabgo.pro, port: 15712, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'UK Detour-03 AEAD', type: vmess, server: uk-detour-03.grabgo.pro, port: 15713, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'UK Detour-04 AEAD', type: vmess, server: uk-detour-04.grabgo.pro, port: 15714, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'UK Detour-05 AEAD', type: vmess, server: uk-detour-05.grabgo.pro, port: 15715, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+    - { name: 'UK Detour-06 AEAD', type: vmess, server: uk-detour-06.grabgo.pro, port: 15716, uuid: 6381e1c8-3bcc-4eed-abbc-bc1a122c6b69, alterId: 0, cipher: auto, ws-path: / }
+proxy-groups:
+    - { name: auto, type: url-test, proxies: ['DE-Detour 01 AEAD', 'DE-Detour 02 AEAD', 'DE-Detour-03 AEAD', 'Extreme Australia 01 (NF AU IPv6 Disney)', 'Extreme Australia 02 (NF AU IPv6 Disney)', 'Extreme France 01 (NF FR IPv6 Disney)', 'Extreme France 02 (NF FR IPv6 Disney)', 'Extreme France 03 (NF FR IPv6 Disney)', 'Extreme France 04 (NF FR IPv6 Disney)', 'Extreme Hong Kong 01 (NF HK)', 'Extreme Hong Kong 02 (NF HK)', 'Extreme Hong Kong 03 (NF HK)', 'Extreme Hong Kong 04 (NF HK)', 'Extreme Japan 01 (NF JP Disney Prime ChatGPT)', 'Extreme Singapore 01 (NF SG Disney Prime ChatGPT)', 'Extreme Singapore 02 (NF SG Disney Prime ChatGPT)', 'Extreme Singapore 03 (NF SG Disney Prime ChatGPT)', 'Extreme Taiwan 01 (NF TW Disney ChatGPT)', 'Extreme Taiwan 02 (NF TW Disney ChatGPT)', 'Extreme Taiwan 03 (NF TW Disney ChatGPT)', 'Extreme UK 01 (NF UK BBC Prime ChatGPT)', 'Extreme USA 01 (NF TR IPv6 Disney)', 'Extreme USA 02 (NF TR IPv6 Disney)', 'Extreme USA 03 (NF US Disney ChatGPT)', 'Extreme USA 04 (NF US Disney ChatGPT)', 'Extreme USA 05 (NF US Disney ChatGPT)', 'Extreme USA 06 (NF US Disney ChatGPT)', 'Extreme Vietnam 01', 'HKT-Detour 01 AEAD', 'HKT-Detour 02 AEAD', 'HKT-Detour 03 AEAD', 'HKT-Detour 04 AEAD', 'HKT-Detour 05 AEAD', 'HKT-Detour 06 AEAD', 'HKT-Detour 07 AEAD', 'HKT-Detour 08 AEAD', 'HKT-Detour 09 AEAD', 'HKT-Detour 10 AEAD', 'HKT-Detour 11 AEAD', 'HKT-Detour 12 AEAD', 'HKT-Detour 13 AEAD', 'HKT-Detour 14 AEAD', 'HKT-Detour 15 AEAD', 'HKT-Detour 16 AEAD', 'HKT-Detour 17 AEAD', 'HKT-Detour 18 AEAD', 'HKT-Detour 19 AEAD', 'HKT-Detour 20 AEAD', 'HKT-Detour 21 AEAD', 'HKT-Detour 22 AEAD', 'HKT-Detour 23 AEAD', 'HKT-Detour 24 AEAD', 'IEPL SZ-HK 01 AEAD', 'IEPL SZ-HK 02 AEAD', 'IEPL SZ-HK 03 AEAD', 'IEPL SZ-HK 04 AEAD', 'IEPL SZ-HK 05 AEAD', 'IEPL SZ-HK 06 AEAD', 'IEPL SZ-HK 07 AEAD', 'IEPL SZ-HK 08 AEAD', 'IEPL SZ-HK 09 AEAD', 'IEPL SZ-HK 10 AEAD', 'IEPL SZ-HK 11 AEAD', 'IEPL SZ-HK 12 AEAD', 'IEPL SZ-JP 01 AEAD', 'IEPL SZ-JP 02 AEAD', 'IEPL SZ-JP 03 AEAD', 'IEPL SZ-JP 04 AEAD', 'IEPL SZ-SG 01 AEAD', 'IEPL SZ-SG 02 AEAD', 'IEPL SZ-SG 03 AEAD', 'IEPL SZ-SG 04 AEAD', 'IEPL SZ-SG 05 AEAD', 'IEPL SZ-SG 06 AEAD', 'IEPL SZ-SG 07 AEAD', 'IEPL SZ-SG 08 AEAD', 'IEPL SZ-SG 09 AEAD', 'IEPL SZ-SG 10 AEAD', 'IEPL SZ-US 01 AEAD', 'IEPL SZ-US 02 AEAD', 'IEPL SZ-US 03 AEAD', 'IEPL SZ-US 04 AEAD', 'IEPL SZ-US 05 AEAD', 'IEPL SZ-US 06 AEAD', 'IEPL SZ-US 07 AEAD', 'IEPL SZ-US 08 AEAD', 'IEPL SZ-US 09 AEAD', 'IEPL SZ-US 10 AEAD', 'JP-Detour 01 AEAD', 'JP-Detour 02 AEAD', 'JP-Detour 03 AEAD', 'JP-Detour 04 AEAD', 'JP-Detour 05 AEAD', 'JP-Detour 06 AEAD', 'LA-Detour 01 AEAD', 'LA-Detour 02 AEAD', 'LA-Detour 03 AEAD', 'LA-Detour 04 AEAD', 'LA-Detour 05 AEAD', 'LA-Detour 06 AEAD', 'LA-Detour 07 AEAD', 'LA-Detour 08 AEAD', 'LA-Detour 09 AEAD', 'LA-Detour 10 AEAD', 'Oz-Detour 01 AEAD', 'Oz-Detour 02 AEAD', 'SG-Detour 01 AEAD', 'SG-Detour 02 AEAD', 'SG-Detour 03 AEAD', 'TW-Detour 01 AEAD', 'TW-Detour 02 AEAD', 'TW-Detour 03 AEAD', 'TW-Detour 04 AEAD', 'TW-Detour 05 AEAD', 'TW-Detour 06 AEAD', 'TW-Detour 07 AEAD', 'TW-Detour 08 AEAD', 'TW-Detour 09 AEAD', 'TW-Detour 10 AEAD', 'TW-Detour 11 AEAD', 'TW-Detour 12 AEAD', 'TW-Detour 13 AEAD', 'TW-Detour 14 AEAD', 'TW-Detour 15 AEAD', 'TW-Detour 16 AEAD', 'TW-Detour 17 AEAD', 'TW-Detour 18 AEAD', 'TW-Detour 19 AEAD', 'TW-Detour 20 AEAD', 'TW-Detour 21 AEAD', 'TW-Detour 22 AEAD', 'TW-Detour 23 AEAD', 'TW-Detour 24 AEAD', 'UK Detour-01 AEAD', 'UK Detour-02 AEAD', 'UK Detour-03 AEAD', 'UK Detour-04 AEAD', 'UK Detour-05 AEAD', 'UK Detour-06 AEAD'], url: 'https://www.bing.com', interval: 300 }
+    - { name: fallback-auto, type: fallback, proxies: ['DE-Detour 01 AEAD', 'DE-Detour 02 AEAD', 'DE-Detour-03 AEAD', 'Extreme Australia 01 (NF AU IPv6 Disney)', 'Extreme Australia 02 (NF AU IPv6 Disney)', 'Extreme France 01 (NF FR IPv6 Disney)', 'Extreme France 02 (NF FR IPv6 Disney)', 'Extreme France 03 (NF FR IPv6 Disney)', 'Extreme France 04 (NF FR IPv6 Disney)', 'Extreme Hong Kong 01 (NF HK)', 'Extreme Hong Kong 02 (NF HK)', 'Extreme Hong Kong 03 (NF HK)', 'Extreme Hong Kong 04 (NF HK)', 'Extreme Japan 01 (NF JP Disney Prime ChatGPT)', 'Extreme Singapore 01 (NF SG Disney Prime ChatGPT)', 'Extreme Singapore 02 (NF SG Disney Prime ChatGPT)', 'Extreme Singapore 03 (NF SG Disney Prime ChatGPT)', 'Extreme Taiwan 01 (NF TW Disney ChatGPT)', 'Extreme Taiwan 02 (NF TW Disney ChatGPT)', 'Extreme Taiwan 03 (NF TW Disney ChatGPT)', 'Extreme UK 01 (NF UK BBC Prime ChatGPT)', 'Extreme USA 01 (NF TR IPv6 Disney)', 'Extreme USA 02 (NF TR IPv6 Disney)', 'Extreme USA 03 (NF US Disney ChatGPT)', 'Extreme USA 04 (NF US Disney ChatGPT)', 'Extreme USA 05 (NF US Disney ChatGPT)', 'Extreme USA 06 (NF US Disney ChatGPT)', 'Extreme Vietnam 01', 'HKT-Detour 01 AEAD', 'HKT-Detour 02 AEAD', 'HKT-Detour 03 AEAD', 'HKT-Detour 04 AEAD', 'HKT-Detour 05 AEAD', 'HKT-Detour 06 AEAD', 'HKT-Detour 07 AEAD', 'HKT-Detour 08 AEAD', 'HKT-Detour 09 AEAD', 'HKT-Detour 10 AEAD', 'HKT-Detour 11 AEAD', 'HKT-Detour 12 AEAD', 'HKT-Detour 13 AEAD', 'HKT-Detour 14 AEAD', 'HKT-Detour 15 AEAD', 'HKT-Detour 16 AEAD', 'HKT-Detour 17 AEAD', 'HKT-Detour 18 AEAD', 'HKT-Detour 19 AEAD', 'HKT-Detour 20 AEAD', 'HKT-Detour 21 AEAD', 'HKT-Detour 22 AEAD', 'HKT-Detour 23 AEAD', 'HKT-Detour 24 AEAD', 'IEPL SZ-HK 01 AEAD', 'IEPL SZ-HK 02 AEAD', 'IEPL SZ-HK 03 AEAD', 'IEPL SZ-HK 04 AEAD', 'IEPL SZ-HK 05 AEAD', 'IEPL SZ-HK 06 AEAD', 'IEPL SZ-HK 07 AEAD', 'IEPL SZ-HK 08 AEAD', 'IEPL SZ-HK 09 AEAD', 'IEPL SZ-HK 10 AEAD', 'IEPL SZ-HK 11 AEAD', 'IEPL SZ-HK 12 AEAD', 'IEPL SZ-JP 01 AEAD', 'IEPL SZ-JP 02 AEAD', 'IEPL SZ-JP 03 AEAD', 'IEPL SZ-JP 04 AEAD', 'IEPL SZ-SG 01 AEAD', 'IEPL SZ-SG 02 AEAD', 'IEPL SZ-SG 03 AEAD', 'IEPL SZ-SG 04 AEAD', 'IEPL SZ-SG 05 AEAD', 'IEPL SZ-SG 06 AEAD', 'IEPL SZ-SG 07 AEAD', 'IEPL SZ-SG 08 AEAD', 'IEPL SZ-SG 09 AEAD', 'IEPL SZ-SG 10 AEAD', 'IEPL SZ-US 01 AEAD', 'IEPL SZ-US 02 AEAD', 'IEPL SZ-US 03 AEAD', 'IEPL SZ-US 04 AEAD', 'IEPL SZ-US 05 AEAD', 'IEPL SZ-US 06 AEAD', 'IEPL SZ-US 07 AEAD', 'IEPL SZ-US 08 AEAD', 'IEPL SZ-US 09 AEAD', 'IEPL SZ-US 10 AEAD', 'JP-Detour 01 AEAD', 'JP-Detour 02 AEAD', 'JP-Detour 03 AEAD', 'JP-Detour 04 AEAD', 'JP-Detour 05 AEAD', 'JP-Detour 06 AEAD', 'LA-Detour 01 AEAD', 'LA-Detour 02 AEAD', 'LA-Detour 03 AEAD', 'LA-Detour 04 AEAD', 'LA-Detour 05 AEAD', 'LA-Detour 06 AEAD', 'LA-Detour 07 AEAD', 'LA-Detour 08 AEAD', 'LA-Detour 09 AEAD', 'LA-Detour 10 AEAD', 'Oz-Detour 01 AEAD', 'Oz-Detour 02 AEAD', 'SG-Detour 01 AEAD', 'SG-Detour 02 AEAD', 'SG-Detour 03 AEAD', 'TW-Detour 01 AEAD', 'TW-Detour 02 AEAD', 'TW-Detour 03 AEAD', 'TW-Detour 04 AEAD', 'TW-Detour 05 AEAD', 'TW-Detour 06 AEAD', 'TW-Detour 07 AEAD', 'TW-Detour 08 AEAD', 'TW-Detour 09 AEAD', 'TW-Detour 10 AEAD', 'TW-Detour 11 AEAD', 'TW-Detour 12 AEAD', 'TW-Detour 13 AEAD', 'TW-Detour 14 AEAD', 'TW-Detour 15 AEAD', 'TW-Detour 16 AEAD', 'TW-Detour 17 AEAD', 'TW-Detour 18 AEAD', 'TW-Detour 19 AEAD', 'TW-Detour 20 AEAD', 'TW-Detour 21 AEAD', 'TW-Detour 22 AEAD', 'TW-Detour 23 AEAD', 'TW-Detour 24 AEAD', 'UK Detour-01 AEAD', 'UK Detour-02 AEAD', 'UK Detour-03 AEAD', 'UK Detour-04 AEAD', 'UK Detour-05 AEAD', 'UK Detour-06 AEAD'], url: 'https://www.bing.com', interval: 300 }
+    - { name: select, type: select, proxies: ['DE-Detour 01 AEAD', 'DE-Detour 02 AEAD', 'DE-Detour-03 AEAD', 'Extreme Australia 01 (NF AU IPv6 Disney)', 'Extreme Australia 02 (NF AU IPv6 Disney)', 'Extreme France 01 (NF FR IPv6 Disney)', 'Extreme France 02 (NF FR IPv6 Disney)', 'Extreme France 03 (NF FR IPv6 Disney)', 'Extreme France 04 (NF FR IPv6 Disney)', 'Extreme Hong Kong 01 (NF HK)', 'Extreme Hong Kong 02 (NF HK)', 'Extreme Hong Kong 03 (NF HK)', 'Extreme Hong Kong 04 (NF HK)', 'Extreme Japan 01 (NF JP Disney Prime ChatGPT)', 'Extreme Singapore 01 (NF SG Disney Prime ChatGPT)', 'Extreme Singapore 02 (NF SG Disney Prime ChatGPT)', 'Extreme Singapore 03 (NF SG Disney Prime ChatGPT)', 'Extreme Taiwan 01 (NF TW Disney ChatGPT)', 'Extreme Taiwan 02 (NF TW Disney ChatGPT)', 'Extreme Taiwan 03 (NF TW Disney ChatGPT)', 'Extreme UK 01 (NF UK BBC Prime ChatGPT)', 'Extreme USA 01 (NF TR IPv6 Disney)', 'Extreme USA 02 (NF TR IPv6 Disney)', 'Extreme USA 03 (NF US Disney ChatGPT)', 'Extreme USA 04 (NF US Disney ChatGPT)', 'Extreme USA 05 (NF US Disney ChatGPT)', 'Extreme USA 06 (NF US Disney ChatGPT)', 'Extreme Vietnam 01', 'HKT-Detour 01 AEAD', 'HKT-Detour 02 AEAD', 'HKT-Detour 03 AEAD', 'HKT-Detour 04 AEAD', 'HKT-Detour 05 AEAD', 'HKT-Detour 06 AEAD', 'HKT-Detour 07 AEAD', 'HKT-Detour 08 AEAD', 'HKT-Detour 09 AEAD', 'HKT-Detour 10 AEAD', 'HKT-Detour 11 AEAD', 'HKT-Detour 12 AEAD', 'HKT-Detour 13 AEAD', 'HKT-Detour 14 AEAD', 'HKT-Detour 15 AEAD', 'HKT-Detour 16 AEAD', 'HKT-Detour 17 AEAD', 'HKT-Detour 18 AEAD', 'HKT-Detour 19 AEAD', 'HKT-Detour 20 AEAD', 'HKT-Detour 21 AEAD', 'HKT-Detour 22 AEAD', 'HKT-Detour 23 AEAD', 'HKT-Detour 24 AEAD', 'IEPL SZ-HK 01 AEAD', 'IEPL SZ-HK 02 AEAD', 'IEPL SZ-HK 03 AEAD', 'IEPL SZ-HK 04 AEAD', 'IEPL SZ-HK 05 AEAD', 'IEPL SZ-HK 06 AEAD', 'IEPL SZ-HK 07 AEAD', 'IEPL SZ-HK 08 AEAD', 'IEPL SZ-HK 09 AEAD', 'IEPL SZ-HK 10 AEAD', 'IEPL SZ-HK 11 AEAD', 'IEPL SZ-HK 12 AEAD', 'IEPL SZ-JP 01 AEAD', 'IEPL SZ-JP 02 AEAD', 'IEPL SZ-JP 03 AEAD', 'IEPL SZ-JP 04 AEAD', 'IEPL SZ-SG 01 AEAD', 'IEPL SZ-SG 02 AEAD', 'IEPL SZ-SG 03 AEAD', 'IEPL SZ-SG 04 AEAD', 'IEPL SZ-SG 05 AEAD', 'IEPL SZ-SG 06 AEAD', 'IEPL SZ-SG 07 AEAD', 'IEPL SZ-SG 08 AEAD', 'IEPL SZ-SG 09 AEAD', 'IEPL SZ-SG 10 AEAD', 'IEPL SZ-US 01 AEAD', 'IEPL SZ-US 02 AEAD', 'IEPL SZ-US 03 AEAD', 'IEPL SZ-US 04 AEAD', 'IEPL SZ-US 05 AEAD', 'IEPL SZ-US 06 AEAD', 'IEPL SZ-US 07 AEAD', 'IEPL SZ-US 08 AEAD', 'IEPL SZ-US 09 AEAD', 'IEPL SZ-US 10 AEAD', 'JP-Detour 01 AEAD', 'JP-Detour 02 AEAD', 'JP-Detour 03 AEAD', 'JP-Detour 04 AEAD', 'JP-Detour 05 AEAD', 'JP-Detour 06 AEAD', 'LA-Detour 01 AEAD', 'LA-Detour 02 AEAD', 'LA-Detour 03 AEAD', 'LA-Detour 04 AEAD', 'LA-Detour 05 AEAD', 'LA-Detour 06 AEAD', 'LA-Detour 07 AEAD', 'LA-Detour 08 AEAD', 'LA-Detour 09 AEAD', 'LA-Detour 10 AEAD', 'Oz-Detour 01 AEAD', 'Oz-Detour 02 AEAD', 'SG-Detour 01 AEAD', 'SG-Detour 02 AEAD', 'SG-Detour 03 AEAD', 'TW-Detour 01 AEAD', 'TW-Detour 02 AEAD', 'TW-Detour 03 AEAD', 'TW-Detour 04 AEAD', 'TW-Detour 05 AEAD', 'TW-Detour 06 AEAD', 'TW-Detour 07 AEAD', 'TW-Detour 08 AEAD', 'TW-Detour 09 AEAD', 'TW-Detour 10 AEAD', 'TW-Detour 11 AEAD', 'TW-Detour 12 AEAD', 'TW-Detour 13 AEAD', 'TW-Detour 14 AEAD', 'TW-Detour 15 AEAD', 'TW-Detour 16 AEAD', 'TW-Detour 17 AEAD', 'TW-Detour 18 AEAD', 'TW-Detour 19 AEAD', 'TW-Detour 20 AEAD', 'TW-Detour 21 AEAD', 'TW-Detour 22 AEAD', 'TW-Detour 23 AEAD', 'TW-Detour 24 AEAD', 'UK Detour-01 AEAD', 'UK Detour-02 AEAD', 'UK Detour-03 AEAD', 'UK Detour-04 AEAD', 'UK Detour-05 AEAD', 'UK Detour-06 AEAD'] }
+rules:
+  - RULE-SET,custom-rules,select
